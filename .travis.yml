@@ -1,0 +1,28 @@
+sudo: required
+
+services:
+  - docker
+
+addons:
+  apt:
+    packages:
+      - docker-ce=18.01.0~ce-0~ubuntu
+
+before_script:
+  - make setup_test
+
+script:
+  - make test
+
+after_script:
+  - make clean_up
+
+notifications:
+  webhooks:
+    urls:
+      - https://galaxy.ansible.com/api/v1/notifications/
+    on_success: always
+    on_failure: never
+    on_start: never
+    on_cancel: never
+    on_error: never

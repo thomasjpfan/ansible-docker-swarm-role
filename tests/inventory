@@ -1,0 +1,19 @@
+[all]
+tests_server1_1 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3
+tests_server2_1 ansible_connection=docker ansible_python_interpreter=/usr/bin/python2
+tests_server3_1 ansible_connection=docker ansible_python_interpreter=/usr/bin/python3
+tests_server4_1 ansible_connection=docker ansible_python_interpreter=/usr/bin/python2
+
+[docker]
+tests_server1_1
+tests_server2_1
+tests_server3_1
+tests_server4_1
+
+[docker_swarm_manager]
+tests_server1_1 docker_swarm_labels="{'db':'true'}"
+tests_server3_1 docker_swarm_labels="{'dog':'big'}"
+
+[docker_swarm_worker]
+tests_server2_1 docker_swarm_labels="{'docker':'17.12', 'type':'queue'}"
+tests_server4_1

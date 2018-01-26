@@ -1,0 +1,33 @@
+---
+
+- name: label | Get list of labels
+  command: >
+    docker inspect -f {% raw %}'{{ json .Spec.Labels }}'{% endraw %}
+    {{ ansible_hostname }}
+  register: docker_swarm_current_labels
+  changed_when: False
+  delegate_to: "{{ docker_swarm_primary_manager_name }}"
+  delegate_facts: True
+
+- name: label | Set current labels
+  set_fact:
+    docker_swarm_current_labels: "{{ docker_swarm_current_labels.stdout | from_json }}"
+
+- name: labels | Remove old labels
+  command: >
+    docker node update --label-rm {{ item }} {{ ansible_hostname }}
+  delegate_to: "{{ docker_swarm_primary_manager_name }}"
+  with_items: >
+    {{ docker_swarm_current_labels |
+        list |
+        difference(docker_swarm_labels | default({}) | list) }}
+
+- name: labels | Add new labels
+  command: >
+    docker node update --label-add {{ item.key }}={{ item.value }}
+    {{ ansible_hostname }}
+  delegate_to: "{{ docker_swarm_primary_manager_name }}"
+  when: >
+     (docker_swarm_current_labels[item.key] is not defined) or
+     (docker_swarm_current_labels[item.key] != item.value)
+  with_dict: "{{ docker_swarm_labels | default({}) }}"
