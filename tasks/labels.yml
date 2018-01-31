@@ -10,7 +10,6 @@
   set_fact:
     docker_swarm_node_id: "{{ _docker_swarm_node_id.stdout }}"
 
-
 - name: label | Get list of labels
   command: >
     docker inspect -f {% raw %}'{{ json .Spec.Labels }}'{% endraw %}

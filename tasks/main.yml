@@ -1,10 +1,10 @@
 ---
 
-# - name: main | Docker started
-#   service:
-#     name: docker
-#     state: started
+- name: main | Docker started
+  service:
+    name: docker
+    state: started
 
-# - include_tasks: cluster.yml
+- include_tasks: cluster.yml
 
 - include_tasks: labels.yml
