@@ -1,9 +1,20 @@
 ---
 
+- name: label | Get Node ID
+  command: >
+    docker info -f {% raw %}'{{ .Swarm.NodeID }}'{% endraw %}
+  register: _docker_swarm_node_id
+  changed_when: False
+
+- name: label | Set fact node_id
+  set_fact:
+    docker_swarm_node_id: "{{ _docker_swarm_node_id.stdout }}"
+
+
 - name: label | Get list of labels
   command: >
     docker inspect -f {% raw %}'{{ json .Spec.Labels }}'{% endraw %}
-    {{ ansible_hostname }}
+    {{ docker_swarm_node_id }}
   register: docker_swarm_current_labels
   changed_when: False
   delegate_to: "{{ docker_swarm_primary_manager_name }}"
@@ -15,7 +26,7 @@
 
 - name: labels | Remove old labels
   command: >
-    docker node update --label-rm {{ item }} {{ ansible_hostname }}
+    docker node update --label-rm {{ item }} {{ docker_swarm_node_id }}
   delegate_to: "{{ docker_swarm_primary_manager_name }}"
   with_items: >
     {{ docker_swarm_current_labels |
@@ -25,7 +36,7 @@
 - name: labels | Add new labels
   command: >
     docker node update --label-add {{ item.key }}={{ item.value }}
-    {{ ansible_hostname }}
+    {{ docker_swarm_node_id }}
   delegate_to: "{{ docker_swarm_primary_manager_name }}"
   when: >
      (docker_swarm_current_labels[item.key] is not defined) or
