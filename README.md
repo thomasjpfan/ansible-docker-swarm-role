@@ -76,7 +76,7 @@ make setup_test
 make test
 ```
 
-3. Stop up container
+3. Clean up containers
 
 ```bash
 make clean_up
