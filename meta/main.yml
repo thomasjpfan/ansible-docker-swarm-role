@@ -3,10 +3,11 @@ galaxy_info:
   author: Thomas Fan
   license: MIT
   description: Configures a Docker Swarm cluster.
-  min_ansible_version: 2.4
+  min_ansible_version: 2.6
   platforms:
     - name: Ubuntu
       versions:
+        - bionic
         - xenial
   galaxy_tags:
     - development

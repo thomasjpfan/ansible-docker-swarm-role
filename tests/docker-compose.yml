@@ -2,25 +2,25 @@ version: "3.2"
 
 services:
   server1:
-    image: thomasjpfan/ubuntu-docker-ce-systemd:16.04-py3-docker-ce-17.12.0
+    image: thomasjpfan/ubuntu-docker-ce-systemd:16.04-py2-docker-ce-18.06.0
     hostname: tests_server1_1
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   server2:
-    image: thomasjpfan/ubuntu-docker-ce-systemd:16.04-py2-docker-ce-17.12.0
+    image: thomasjpfan/ubuntu-docker-ce-systemd:18.04-py2-docker-ce-18.06.0
     hostname: tests_server2_1
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   server3:
-    image: thomasjpfan/ubuntu-docker-ce-systemd:16.04-py3-docker-ce-17.12.0
+    image: thomasjpfan/ubuntu-docker-ce-systemd:16.04-py3-docker-ce-18.06.0
     hostname: tests_server3_1
     privileged: true
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
   server4:
-    image: thomasjpfan/ubuntu-docker-ce-systemd:16.04-py2-docker-ce-17.12.0
+    image: thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.06.0
     hostname: tests_server4_1
     privileged: true
     volumes:

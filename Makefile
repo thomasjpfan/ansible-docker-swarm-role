@@ -1,6 +1,6 @@
 .PHONY: setup_test clean_up test cycle cli
 
-TAG ?= 1.0.0-docker-18.01.0-ce-py3
+TAG ?= 1.1.0-docker-18.06.0-ce-py3
 CLI_COMMAND := docker run --rm -v $(PWD):/etc/ansible/roles/role_to_test \
 	--name runner -v /var/run/docker.sock:/var/run/docker.sock:ro
 DOCKER_HUB_REPO ?= thomasjpfan/ansible-docker-runner

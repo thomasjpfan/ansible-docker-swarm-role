@@ -3,12 +3,14 @@ import pytest
 
 testinfra_hosts = ['tests_server1_1']
 
-HOST_LABELS = [
-    ('tests_server1_1', {'db': 'true'}),
-    ('tests_server3_1', {'dog': 'big'}),
-    ('tests_server2_1', {'docker': '17.12', 'type': 'queue'}),
-    ('tests_server4_1', {})
-]
+HOST_LABELS = [('tests_server1_1', {
+    'db': 'true'
+}), ('tests_server3_1', {
+    'dog': 'big'
+}), ('tests_server2_1', {
+    'docker': '18.06',
+    'type': 'queue'
+}), ('tests_server4_1', {})]
 
 
 @pytest.mark.parametrize('hostname, labels', HOST_LABELS)

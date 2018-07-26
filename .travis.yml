@@ -6,7 +6,7 @@ services:
 addons:
   apt:
     packages:
-      - docker-ce=18.01.0~ce-0~ubuntu
+      - docker-ce=18.06.0~ce~3-0~ubuntu
 
 before_script:
   - make setup_test
