@@ -9,7 +9,7 @@ lint:
     config-file: molecule/default/yaml-lint.yml
 platforms:
   - name: instance-1
-    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.06.0"
+    image: thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0
     command: "/sbin/init --log-target=journal 3>&1"
     hostname: instance-1
     volumes:
@@ -19,7 +19,7 @@ platforms:
     privileged: true
     pre_build_image: true
   - name: instance-2
-    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.06.0"
+    image: thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0
     command: "/sbin/init --log-target=journal 3>&1"
     hostname: instance-2
     volumes:
@@ -29,7 +29,7 @@ platforms:
     groups:
       - docker_swarm_manager
   - name: instance-3
-    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.06.0"
+    image: thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0
     command: "/sbin/init --log-target=journal 3>&1"
     hostname: instance-3
     volumes:
@@ -39,7 +39,7 @@ platforms:
     groups:
       - docker_swarm_worker
   - name: instance-4
-    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.06.0"
+    image: thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0
     command: "/sbin/init --log-target=journal 3>&1"
     hostname: instance-4
     volumes:
