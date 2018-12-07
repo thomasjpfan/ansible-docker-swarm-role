@@ -15,7 +15,7 @@
     - docker-swarm-labels
 
 - name: label | Get list of labels
-  command: >
+  command: >-
     docker inspect -f {% raw %}'{{ json .Spec.Labels }}'{% endraw %}
     {{ docker_swarm_node_id }}
   register: docker_swarm_current_labels
@@ -27,13 +27,13 @@
 
 - name: label | Set current labels
   set_fact:
-    docker_swarm_current_labels: >
-      "{{ docker_swarm_current_labels.stdout | from_json }}"
+    docker_swarm_current_labels: >-
+      {{ docker_swarm_current_labels.stdout | from_json }}
   tags:
     - docker-swarm-labels
 
 - name: labels | Remove old labels
-  command: >
+  command: >-
     docker node update --label-rm {{ item }} {{ docker_swarm_node_id }}
   delegate_to: "{{ docker_swarm_primary_manager_name }}"
   with_items: >
@@ -44,11 +44,11 @@
     - docker-swarm-labels
 
 - name: labels | Add new labels
-  command: >
+  command: >-
     docker node update --label-add {{ item.key }}={{ item.value }}
     {{ docker_swarm_node_id }}
   delegate_to: "{{ docker_swarm_primary_manager_name }}"
-  when: >
+  when: >-
      (docker_swarm_current_labels[item.key] is not defined) or
      (docker_swarm_current_labels[item.key] != item.value)
   with_dict: "{{ docker_swarm_labels | default({}) }}"

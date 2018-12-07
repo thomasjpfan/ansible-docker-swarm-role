@@ -1,8 +1,8 @@
 ---
 
 - name: cluster | Get swarm state
-  command: >
-    "{% raw %}docker info -f '{{ .Swarm.LocalNodeState }}'{% endraw %}"
+  command: >-
+    docker info -f {% raw %}'{{ .Swarm.LocalNodeState }}'{% endraw %}
   changed_when: false
   register: docker_swarm_state
 
@@ -10,13 +10,14 @@
   set_fact:
     docker_node_active: "{{ docker_swarm_state.stdout == 'active' }}"
     docker_node_pending: "{{ docker_swarm_state.stdout == 'pending' }}"
-    docker_swarm_addr: >
-        "{{ vars['ansible_' +
-            docker_swarm_network_interface]['ipv4']['address'] }}"
+    docker_swarm_addr: >-
+      {{ vars['ansible_' +
+         docker_swarm_network_interface]['ipv4']['address'] }}
 
 - name: cluster | Init "Swarm Mode" on the first manager
   command: >
     docker swarm init
+    --listen-addr {{ docker_swarm_addr }}:{{ docker_swarm_port }}
     --advertise-addr {{ docker_swarm_addr }}
   when:
     - not docker_node_active
@@ -46,13 +47,14 @@
 
 - name: cluster | Register primary node
   set_fact:
-    docker_primary_node_addr: >
-      "{{ hostvars[docker_swarm_primary_manager_name]['docker_swarm_addr'] }}"
+    docker_primary_node_addr: >-
+      {{ hostvars[docker_swarm_primary_manager_name]['docker_swarm_addr'] }}
 
 - name: cluster | Join Swarm as a worker
   command: >
     docker swarm join
     --advertise-addr {{ docker_swarm_addr }}
+    --listen-addr {{ docker_swarm_addr }}:{{ docker_swarm_port }}
     --token {{ docker_swarm_worker_token.stdout }}
     {{ docker_primary_node_addr }}:{{ docker_swarm_port }}
   when:
@@ -64,6 +66,7 @@
   command: >
     docker swarm join
     --advertise-addr {{ docker_swarm_addr }}
+    --listen-addr {{ docker_swarm_addr }}:{{ docker_swarm_port }}
     --token {{ docker_swarm_manager_token.stdout }}
     {{ docker_primary_node_addr }}:{{ docker_swarm_port }}
   when:
