@@ -36,12 +36,12 @@ This role configures hosts in group `docker_swarm_manager` to be manager nodes a
 
 ```ini
 [docker_swarm_manager]
-tests_server1_1
-tests_server3_1
+server1
+server2
 
 [docker_swarm_worker]
-tests_server2_1
-tests_server4_1
+server3
+server4
 ```
 
 ### Docker Swarm Labels
@@ -51,35 +51,13 @@ Swarm labels can be added to nodes by setting the `docker_swarm_label` to a list
 ```ini
 ...
 [docker_swarm_manager]
-tests_server1_1 docker_swarm_labels="{'db':'true'}"
-tests_server3_1 docker_swarm_labels="{'dog':'big'}"
+server1 docker_swarm_labels="{'db':'true'}"
+server2 docker_swarm_labels="{'dog':'big'}"
 
 [docker_swarm_worker]
-tests_server2_1 docker_swarm_labels="{'docker':'17.12', 'type':'queue'}"
-tests_server4_1
+server3 docker_swarm_labels="{'docker':'17.12', 'type':'queue'}"
+server4
 ...
-```
-
-## Testing
-
-This project uses [ansible-docker-runner](https://github.com/thomasjpfan/ansible-docker-runner) to run tests in a docker container.
-
-1. Start Container for testing:
-
-```bash
-make setup_test
-```
-
-2. Run Tests
-
-```bash
-make test
-```
-
-3. Clean up containers
-
-```bash
-make clean_up
 ```
 
 ## License

@@ -1,0 +1,77 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/default/yaml-lint.yml
+platforms:
+  - name: instance-1
+    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0"
+    command: "/sbin/init --log-target=journal 3>&1"
+    hostname: instance-1
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - docker_swarm_manager
+    privileged: true
+    pre_build_image: true
+  - name: instance-2
+    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0"
+    command: "/sbin/init --log-target=journal 3>&1"
+    hostname: instance-2
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - docker_swarm_manager
+  - name: instance-3
+    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0"
+    command: "/sbin/init --log-target=journal 3>&1"
+    hostname: instance-3
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - docker_swarm_worker
+  - name: instance-4
+    image: "thomasjpfan/ubuntu-docker-ce-systemd:18.04-py3-docker-ce-18.09.0"
+    command: "/sbin/init --log-target=journal 3>&1"
+    hostname: instance-4
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    pre_build_image: true
+    groups:
+      - docker_swarm_worker
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+  inventory:
+    group_vars:
+      docker_swarm_manager:
+        ansible_python_interpreter: /usr/bin/python3
+      docker_swarm_worker:
+        ansible_python_interpreter: /usr/bin/python3
+    host_vars:
+      instance-1:
+        docker_swarm_labels:
+          db: "true"
+      instance-2:
+        docker_swarm_labels:
+          docker: "18.06"
+          type: "queue"
+      instance-3:
+        docker_swarm_labels:
+          dog: "big"
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

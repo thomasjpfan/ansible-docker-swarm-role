@@ -4,7 +4,7 @@
   command: >
     docker info -f {% raw %}'{{ .Swarm.NodeID }}'{% endraw %}
   register: _docker_swarm_node_id
-  changed_when: False
+  changed_when: false
   tags:
     - docker-swarm-labels
 
@@ -19,15 +19,16 @@
     docker inspect -f {% raw %}'{{ json .Spec.Labels }}'{% endraw %}
     {{ docker_swarm_node_id }}
   register: docker_swarm_current_labels
-  changed_when: False
+  changed_when: false
   delegate_to: "{{ docker_swarm_primary_manager_name }}"
-  delegate_facts: True
+  delegate_facts: true
   tags:
     - docker-swarm-labels
 
 - name: label | Set current labels
   set_fact:
-    docker_swarm_current_labels: "{{ docker_swarm_current_labels.stdout | from_json }}"
+    docker_swarm_current_labels: >
+      "{{ docker_swarm_current_labels.stdout | from_json }}"
   tags:
     - docker-swarm-labels
 

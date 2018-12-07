@@ -1,6 +1,7 @@
 ---
 
-docker_swarm_primary_manager_name: "{{ groups['docker_swarm_manager'] | first }}"
+docker_swarm_primary_manager_name: >
+  {{ groups['docker_swarm_manager'] | first }}
 
 docker_swarm_hosts: >
   {{ groups['docker_swarm_manager'] | union(groups['docker_swarm_worker']) }}
