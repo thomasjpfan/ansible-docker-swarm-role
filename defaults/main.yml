@@ -4,4 +4,4 @@
 docker_swarm_port: 2377
 
 # Network interface to use
-docker_swarm_network_interface: "eth0"
+docker_swarm_network_interface: "{{ ansible_default_ipv4['interface'] }}"
