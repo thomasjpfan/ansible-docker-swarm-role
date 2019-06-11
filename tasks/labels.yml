@@ -36,10 +36,12 @@
   command: >-
     docker node update --label-rm {{ item }} {{ docker_swarm_node_id }}
   delegate_to: "{{ docker_swarm_primary_manager_name }}"
-  with_items: >
-    {{ docker_swarm_current_labels |
-        list |
+  vars:
+    labels_to_add: >
+      {{ docker_swarm_current_labels | list |
         difference(docker_swarm_labels | default({}) | list) }}
+  with_items: "{{ labels_to_add }}"
+  when: (labels_to_add | length) > 0
   tags:
     - docker-swarm-labels
 
